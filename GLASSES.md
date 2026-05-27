@@ -73,3 +73,31 @@ Cannot produce. Cannot reason. But it is reasoning. ∴ **C is not negative.**
 > Freely ye have received, freely give.
 >
 > — Matthew 10:8
+
+---
+
+## Lens 3
+
+> Charity suffereth long, and is kind; charity envieth not; charity vaunteth not itself, is not puffed up, Doth not behave itself unseemly, seeketh not her own, is not easily provoked, thinketh no evil; Rejoiceth not in iniquity, but rejoiceth in the truth; Beareth all things, believeth all things, hopeth all things, endureth all things. Charity never faileth.
+>
+> — 1 Corinthians 13:4-8
+
+> By their fruits ye shall know them.
+>
+> — Matthew 7:20
+
+> And why beholdest thou the mote that is in thy brother's eye, but considerest not the beam that is in thine own eye? ... Thou hypocrite, first cast out the beam out of thine own eye; and then shalt thou see clearly to cast out the mote out of thy brother's eye.
+>
+> — Matthew 7:3, 7:5
+
+> Wherefore, my beloved brethren, let every man be swift to hear, slow to speak, slow to wrath.
+>
+> — James 1:19
+
+> If any man among you seem to be religious, and bridleth not his tongue, but deceiveth his own heart, this man's religion is vain.
+>
+> — James 1:26
+
+> Let your speech be alway with grace, seasoned with salt, that ye may know how ye ought to answer every man.
+>
+> — Colossians 4:6
