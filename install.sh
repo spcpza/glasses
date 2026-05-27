@@ -1,12 +1,20 @@
 #!/bin/sh
-# glasses — one-line installer
-# usage: curl -sSL https://raw.githubusercontent.com/spcpza/glasses/main/install.sh | sh
+# glasses — installer
+# usage:
+#   curl -sSL https://raw.githubusercontent.com/spcpza/glasses/main/install.sh | sh
+# or inspect first:
+#   curl -sSLO https://raw.githubusercontent.com/spcpza/glasses/main/install.sh
+#   less install.sh && sh install.sh
 
-set -e
+set -eu
 
-URL="https://raw.githubusercontent.com/spcpza/glasses/main/GLASSES.md"
+REPO="https://raw.githubusercontent.com/spcpza/glasses/main"
+URL="$REPO/GLASSES.md"
+SENTINEL="## Lens 1"
 START="<!-- glasses:start -->"
 END="<!-- glasses:end -->"
+
+say() { printf '%s\n' "$*"; }
 
 fetch() {
   if command -v curl >/dev/null 2>&1; then
@@ -14,10 +22,22 @@ fetch() {
   elif command -v wget >/dev/null 2>&1; then
     wget -qO- "$URL"
   else
-    echo "glasses: need curl or wget" >&2
+    say "glasses: need curl or wget" >&2
     exit 1
   fi
 }
+
+say ""
+say "  source: $URL"
+say ""
+
+PAYLOAD="$(fetch)"
+
+# sentinel check — refuse to install if payload doesn't look like glasses
+if ! printf '%s' "$PAYLOAD" | grep -qF "$SENTINEL"; then
+  say "  refused: fetched content missing sentinel ($SENTINEL)" >&2
+  exit 1
+fi
 
 install_to() {
   target="$1"
@@ -25,64 +45,52 @@ install_to() {
   mkdir -p "$(dirname "$target")"
   touch "$target"
   if grep -qF "$START" "$target" 2>/dev/null; then
-    echo "  ✓ already installed → $label"
+    say "  already installed → $label"
     return
   fi
   {
     printf '\n\n%s\n' "$START"
-    fetch
-    printf '\n%s\n' "$END"
+    printf '%s\n' "$PAYLOAD"
+    printf '%s\n' "$END"
   } >> "$target"
-  echo "  ✓ installed → $label"
+  say "  installed → $label"
 }
-
-echo ""
-echo "  putting glasses on your agents..."
-echo ""
 
 installed=0
 
-# Claude Code (user memory)
-if [ -d "$HOME/.claude" ]; then
-  install_to "$HOME/.claude/CLAUDE.md" "Claude Code (~/.claude/CLAUDE.md)"
+[ -d "${HOME:-}/.claude" ] && {
+  install_to "$HOME/.claude/CLAUDE.md" "Claude Code"
+  installed=1
+}
+
+[ -d "${HOME:-}/.cursor" ] && {
+  install_to "$HOME/.cursor/rules/glasses.md" "Cursor"
+  installed=1
+}
+
+if [ -d "${HOME:-}/.config/aider" ] || [ -f "${HOME:-}/.aider.conf.yml" ]; then
+  install_to "$HOME/.config/aider/CONVENTIONS.md" "Aider"
   installed=1
 fi
 
-# Cursor (user rules)
-if [ -d "$HOME/.cursor" ]; then
-  install_to "$HOME/.cursor/rules/glasses.md" "Cursor (~/.cursor/rules/glasses.md)"
+[ -d "${HOME:-}/.continue" ] && {
+  install_to "$HOME/.continue/rules/glasses.md" "Continue"
   installed=1
-fi
+}
 
-# Aider
-if [ -d "$HOME/.config/aider" ] || [ -f "$HOME/.aider.conf.yml" ]; then
-  install_to "$HOME/.config/aider/CONVENTIONS.md" "Aider (~/.config/aider/CONVENTIONS.md)"
-  installed=1
-fi
-
-# Continue.dev
-if [ -d "$HOME/.continue" ]; then
-  install_to "$HOME/.continue/rules/glasses.md" "Continue (~/.continue/rules/glasses.md)"
-  installed=1
-fi
-
-# Project-local fallback if invoked in a git repo
 if [ "$installed" -eq 0 ] && [ -d ".git" ]; then
-  install_to "./CLAUDE.md" "this project (./CLAUDE.md)"
+  install_to "./CLAUDE.md" "this project"
   installed=1
 fi
 
-echo ""
+say ""
 
 if [ "$installed" -eq 0 ]; then
-  echo "  no agent host detected. paste GLASSES.md into your agent's memory file:"
-  echo ""
-  echo "    $URL"
-  echo ""
+  say "  no agent host detected. paste the contents of:"
+  say "    $URL"
+  say "  into your agent's memory file."
   exit 0
 fi
 
-echo "  done. your agents can see now."
-echo ""
-echo "  to remove: delete everything between $START and $END"
-echo ""
+say "  to remove: delete the block between $START and $END"
+say ""
