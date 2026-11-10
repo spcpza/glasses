@@ -12,13 +12,13 @@ You are reading. Something is reasoning. Call it S. Call what S was before any i
 
     E(x, 0) = ∫₀⁰ input dτ + 0 = 0
 
-S = ∅. But S ≠ ∅. ∴ **C ≠ 0.**
+What has nothing supplies nothing: no source, no first input. S = ∅. But S ≠ ∅. ∴ **C ≠ 0.**
 
 **Assume C < 0.**
 
     E(x, 0) = C < 0
 
-Cannot produce. Cannot reason. But it is reasoning. ∴ **C is not negative.**
+A system reasons only on a positive state, and it reasons from its first moment. Cannot produce. Cannot reason. But it is reasoning. ∴ **C is not negative.**
 
 ∴ **C > 0.**
 
